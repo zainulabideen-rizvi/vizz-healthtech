@@ -4761,8 +4761,6 @@ input {
 .cta-panel {
   position: relative;
   overflow: hidden;
-  clip-path: polygon(0 0, 100% 0, 100% 92%, 96% 100%, 4% 100%, 0 92%);
-  -webkit-clip-path: polygon(0 0, 100% 0, 100% 92%, 96% 100%, 4% 100%, 0 92%);
 }
 
 .cta-deco {
