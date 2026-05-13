@@ -88,8 +88,47 @@ document.addEventListener('DOMContentLoaded', () => {
     setupOffscreenPauser();
     setupProjectsDragCarousel();
     setFooterYear();
+    setupNavToggle();
     initAOS();
 });
+
+// Mobile nav: hamburger toggle + auto-close on link click + outside-click close
+function setupNavToggle() {
+    const nav = document.getElementById('primary-nav');
+    const toggle = nav && nav.querySelector('.nav-toggle');
+    if (!nav || !toggle) return;
+
+    const close = () => {
+        nav.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+    };
+    const open = () => {
+        nav.classList.add('is-open');
+        toggle.setAttribute('aria-expanded', 'true');
+    };
+
+    toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        nav.classList.contains('is-open') ? close() : open();
+    });
+
+    // Close when a nav link is tapped (smooth-scroll then dismiss menu)
+    nav.querySelectorAll('.nav-link, .cta-btn').forEach(link => {
+        link.addEventListener('click', () => {
+            if (nav.classList.contains('is-open')) close();
+        });
+    });
+
+    // Close on click/tap outside the nav
+    document.addEventListener('click', (e) => {
+        if (nav.classList.contains('is-open') && !nav.contains(e.target)) close();
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && nav.classList.contains('is-open')) close();
+    });
+}
 
 // Projects carousel — JS-driven auto-scroll + click-and-drag
 function setupProjectsDragCarousel() {
@@ -131,17 +170,29 @@ function setupProjectsDragCarousel() {
     });
     window.addEventListener('resize', measure);
 
-    // rAF loop — moves track when not being dragged & section is in viewport
+    // rAF loop — full 60fps during drag, ~30fps for slow auto-drift to save CPU.
+    let lastAutoFrame = 0;
+    const AUTO_FRAME_INTERVAL = 33; // ~30fps
     const tick = (now) => {
         if (!lastTime) lastTime = now;
-        const dt = Math.min(0.05, (now - lastTime) / 1000); // cap dt for tab-switch jumps
-        lastTime = now;
         if (cycleWidth === 0) measure();
-        if (!isDragging && isVisible && cycleWidth > 0) {
-            offset -= SPEED * dt;
-            wrapOffset();
+        if (isDragging) {
+            // Dragging: write every frame (60fps) so it stays buttery
+            track.style.transform = `translate3d(${offset}px, 0, 0)`;
+            lastTime = now;
+        } else if (isVisible && cycleWidth > 0) {
+            // Auto-drift: only update every ~33ms to halve write work
+            if (now - lastAutoFrame >= AUTO_FRAME_INTERVAL) {
+                const dt = Math.min(0.05, (now - lastTime) / 1000);
+                offset -= SPEED * dt;
+                wrapOffset();
+                track.style.transform = `translate3d(${offset}px, 0, 0)`;
+                lastAutoFrame = now;
+                lastTime = now;
+            }
+        } else {
+            lastTime = now;
         }
-        track.style.transform = `translate3d(${offset}px, 0, 0)`;
         requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
@@ -238,7 +289,7 @@ function generateCosmicStars() {
     if (!cosmicStarsContainer) return;
     // Weighted size distribution: mostly tiny/small (cheap), few medium/large/diamond
     const sizeClasses = ['tiny', 'tiny', 'tiny', 'small', 'small', 'small', 'medium', 'large', 'diamond'];
-    const STAR_COUNT = 45;
+    const STAR_COUNT = 24;
     const frag = document.createDocumentFragment();
     for (let i = 0; i < STAR_COUNT; i++) {
         const star = document.createElement('span');
