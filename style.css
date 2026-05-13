@@ -811,6 +811,7 @@ input {
 }
 
 .workflow-line {
+  display: none;
   position: absolute;
   right: -10%;
   bottom: -10%;
@@ -1049,6 +1050,10 @@ input {
     rgba(255, 255, 255, 0.86),
     rgba(3, 169, 244, 0.08)
   );
+}
+
+.cta-panel .hero-actions {
+  justify-content: center;
 }
 
 .cta-panel h2 {
@@ -2974,107 +2979,53 @@ input {
   flex: 0 0 auto;
   width: 240px;
   min-height: 210px;
-  padding: 18px 18px 20px;
-  border-radius: 20px;
+  padding: 22px 20px 22px 26px;
+  border-radius: 14px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
   position: relative;
   overflow: hidden;
   pointer-events: none;
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(127, 224, 255, 0.16) 0%,
-      transparent 55%
-    ),
-    linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
-  border: 1px solid rgba(3, 169, 244, 0.2);
+  background: linear-gradient(160deg, #ffffff 0%, #ecf6ff 100%);
+  border: 1px solid rgba(3, 169, 244, 0.18);
+  border-left: none;
   box-shadow:
-    0 12px 30px rgba(3, 169, 244, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    0 10px 26px rgba(3, 169, 244, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
   isolation: isolate;
 }
 
-/* Top accent bar — sits above everything */
+/* Full-height left accent border */
 .process-card::before {
   content: "";
   position: absolute;
   top: 0;
+  bottom: 0;
   left: 0;
-  height: 3px;
-  width: 55%;
-  background: linear-gradient(90deg, var(--primary), #7fe0ff);
-  border-radius: 0 999px 999px 0;
-  box-shadow: 0 0 12px rgba(3, 169, 244, 0.5);
+  width: 4px;
+  background: linear-gradient(180deg, var(--primary) 0%, #7fe0ff 100%);
+  box-shadow: 0 0 14px rgba(3, 169, 244, 0.45);
   z-index: 4;
 }
 
-/* Light overlay + dual electric sweep — sits above the big background icon */
+/* Light-white overlay across the whole card + soft cyan corner accent */
 .process-card::after {
   content: "";
   position: absolute;
   inset: 0;
   background:
-        /* Bright leading streak */
-    linear-gradient(
-      110deg,
-      transparent 32%,
-      rgba(127, 224, 255, 0.55) 42%,
-      rgba(255, 255, 255, 0.85) 50%,
-      rgba(127, 224, 255, 0.55) 58%,
-      transparent 68%
+    radial-gradient(
+      ellipse 80% 60% at 100% 0%,
+      rgba(127, 224, 255, 0.32) 0%,
+      transparent 60%
     ),
-    /* Soft trailing glow streak */
-    linear-gradient(
-        110deg,
-        transparent 50%,
-        rgba(168, 240, 255, 0.32) 62%,
-        transparent 74%
-      ),
-    /* Very-light-blue tint overlay (sits over the watermark icon) */
-    linear-gradient(
-        180deg,
-        rgb(255, 255, 255) 0%,
-        rgba(168, 217, 255, 0.42) 100%
-      ),
-    /* Light theme base overlay */
-    linear-gradient(
-        160deg,
-        rgba(214, 238, 255, 0.82) 0%,
-        rgba(178, 220, 255, 0.62) 100%
-      );
-  background-size:
-    240% 100%,
-    240% 100%,
-    100% 100%,
-    100% 100%;
-  background-position:
-    -240% 0,
-    -180% 0,
-    0 0,
-    0 0;
-  background-repeat: no-repeat;
-  animation: electricSweep 7s linear infinite;
+    rgba(255, 255, 255, 0.92);
   z-index: 1;
   pointer-events: none;
-}
-
-@keyframes electricSweep {
-  0% {
-    background-position:
-      -240% 0,
-      -180% 0,
-      0 0,
-      0 0;
-  }
-  100% {
-    background-position:
-      240% 0,
-      300% 0,
-      0 0,
-      0 0;
-  }
 }
 
 /* Big background icon — fills the whole card behind the overlay
@@ -3093,7 +3044,7 @@ input {
     transparent 55%
   );
   box-shadow: none;
-  color: rgba(2, 116, 167, 0.95);
+  color: var(--primary);
   display: grid;
   place-items: center;
   z-index: 0;
@@ -3142,7 +3093,7 @@ input {
   );
   padding: 5px 13px 5px 11px;
   border-radius: 999px;
-  align-self: flex-start;
+  align-self: center;
   border: 1px solid rgba(3, 169, 244, 0.32);
   box-shadow: 0 4px 12px rgba(3, 169, 244, 0.12);
   backdrop-filter: blur(4px);
@@ -3162,14 +3113,13 @@ input {
 /* Title — bigger, tighter, premium feel */
 .process-card strong {
   position: relative;
-  font-family: "Manrope", "Inter", system-ui, sans-serif;
-  font-size: 1.32rem;
-  font-weight: 800;
+  font-family: "Outfit", system-ui, sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
   line-height: 1.12;
-  color: #062235;
-  margin-top: auto;
+  color: #185279;
   padding-top: 14px;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
   text-shadow: 0 1px 10px rgba(255, 255, 255, 0.85);
   font-feature-settings: "ss01", "kern";
 }
@@ -3178,7 +3128,8 @@ input {
   content: "";
   position: absolute;
   top: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 32px;
   height: 2px;
   background: linear-gradient(90deg, var(--primary), #7fe0ff);
@@ -3188,13 +3139,13 @@ input {
 
 /* Description — more readable, refined size + spacing */
 .process-card p {
-  font-family: "Inter", system-ui, sans-serif;
-  font-size: 0.86rem !important;
-  line-height: 1.55 !important;
-  font-weight: 500;
+  font-family: "Outfit", system-ui, sans-serif;
+  font-size: 0.9rem !important;
+  line-height: 1.5 !important;
+  font-weight: 400;
   color: #2b556e !important;
   margin: 0 !important;
-  letter-spacing: -0.005em;
+  letter-spacing: 0;
   text-shadow: 0 1px 8px rgba(255, 255, 255, 0.65);
 }
 
@@ -4815,6 +4766,7 @@ input {
 }
 
 .cta-deco {
+  display: none;
   position: absolute;
   left: 0;
   right: 0;
@@ -6036,10 +5988,10 @@ input {
   .process-card {
     width: 220px;
     min-height: 190px;
-    padding: 16px;
+    padding: 18px 16px 18px 22px;
   }
   .process-card strong {
-    font-size: 0.98rem;
+    font-size: 1.25rem;
   }
   .process-card p {
     font-size: 0.78rem !important;
@@ -6348,7 +6300,7 @@ input {
   .process-card {
     width: 200px;
     min-height: 180px;
-    padding: 14px;
+    padding: 16px 14px 16px 20px;
   }
 
   .culture-overlay strong {
